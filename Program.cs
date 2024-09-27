@@ -27,5 +27,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseMiddleware<LogForgingMiddleware>();
 
 app.Run();
