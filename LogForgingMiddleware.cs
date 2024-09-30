@@ -15,6 +15,12 @@ public class LogForgingMiddleware
         Guest
     }
 
+    public enum AccountRegistrationEventType
+    {
+        AccountCreated = 1,
+        AccountCompleted = 2,        
+    }
+
 
     public LogForgingMiddleware(RequestDelegate next, ILogger<LogForgingMiddleware> logger)
     {
@@ -47,6 +53,8 @@ public class LogForgingMiddleware
             // GOOD: User input logged with new-lines removed
             _logger.LogWarning(role?.Replace(Environment.NewLine, "") + " log in requested");
         }
+
+        _logger.LogInformation($"InvokeAsync called for event: {AccountRegistrationEventType.AccountCreated}");
 
         await _next(context);
     }
