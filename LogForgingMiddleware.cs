@@ -54,6 +54,9 @@ public class LogForgingMiddleware
             _logger.LogWarning(role?.Replace(Environment.NewLine, "") + " log in requested");
         }
 
+        var accountKey = AccountRegistrationEventType.AccountCreated;
+        _logger.LogInformation($"InvokeAsync called for event: {accountKey}");
+
         _logger.LogInformation($"InvokeAsync called for event: {AccountRegistrationEventType.AccountCreated}");
 
         await _next(context);
