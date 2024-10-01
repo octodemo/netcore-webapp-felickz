@@ -21,6 +21,14 @@ public class LogForgingMiddleware
         AccountCompleted = 2,        
     }
 
+    public enum RecommendationType
+    {
+        AccountType1,
+        InvestmentType2
+    }
+
+
+
 
     public LogForgingMiddleware(RequestDelegate next, ILogger<LogForgingMiddleware> logger)
     {
@@ -58,6 +66,11 @@ public class LogForgingMiddleware
         _logger.LogInformation($"InvokeAsync called for event: {accountKey}");
 
         _logger.LogInformation($"InvokeAsync called for event: {AccountRegistrationEventType.AccountCreated}");
+
+
+        RecommendationType type = (RecommendationType)Enum.Parse(typeof(RecommendationType),context.Request.Query["recommendationType"]);
+        _logger.LogInformation("Success {engineType} recommendation for {assessmentId}.", type, 3);
+
 
         await _next(context);
     }
