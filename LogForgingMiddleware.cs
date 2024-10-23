@@ -42,7 +42,7 @@ public class LogForgingMiddleware
     {
         string role = context.Request.Query["role"];
 
-        // BAD: User input logged as-is
+        // BAD: User input logged as-is (cs/log-forging)
         _logger.LogWarning(role + " log in requested.");
 
         // GOOD: User input logged with new-lines removed
@@ -62,9 +62,11 @@ public class LogForgingMiddleware
             _logger.LogWarning(role?.Replace(Environment.NewLine, "") + " log in requested");
         }
 
+        // ISSUE: cast to enum so should be sanitized (cs/cleartext-storage-of-sensitive-information)
         var accountKey = AccountRegistrationEventType.AccountCreated;
         _logger.LogInformation($"InvokeAsync called for event: {accountKey}");
 
+        // GOOD: enum value 
         _logger.LogInformation($"InvokeAsync called for event: {AccountRegistrationEventType.AccountCreated}");
 
 
