@@ -15,16 +15,36 @@ namespace netcore_webapp_felickz.Controllers
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
+        public enum RecommendationEngineType
+
+        {
+            Account401kToIRA,
+            SDIRAInvestment,
+        }
+
+        public enum RegistrationEventType
+        {
+            AccountCreated = 1,
+            AccountCompleted = 2,
+            TrustedContactAdded = 3
+        }
+
+
         private readonly ILogger<WeatherForecastController> _logger;
 
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
+
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
+
+            _logger.LogInformation($"HandleAsync called for trusted contact added event: {RegistrationEventType.TrustedContactAdded}");
+
+
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
@@ -33,5 +53,15 @@ namespace netcore_webapp_felickz.Controllers
             })
             .ToArray();
         }
+
+        //Add post that takes in an enum value type of weather forcast
+        [HttpPost("PostWeatherForecast/{type}/{assessmentId}")]
+        public IActionResult Post([FromRoute] RecommendationEngineType type, [FromRoute] int assessmentId )
+        {
+            _logger.LogInformation("Generating {engineType} recommendation for {assessmentId}.", type, assessmentId);
+
+            return Ok();
+        }
+
     }
 }
